@@ -106,6 +106,9 @@ public class PageMeteo extends AppCompatActivity {
             Element elementLieu = (Element)doc.getElementsByTagName("location").item(0);
             Element elementVille = (Element)elementLieu.getElementsByTagName("name").item(0);
             String ville=  elementVille.getTextContent();
+            String vent = ventDirection+" "+ventForce;
+            Element elementTemperature = (Element)doc.getElementsByTagName("temp_c").item(0);
+            float temperature = Float.parseFloat(elementTemperature.getTextContent());
             if(soleilOuNuage.compareTo("Sunny") == 0) soleilOuNuage = "Ensoleillé";
             else soleilOuNuage = "Nuageux";
 
@@ -118,13 +121,14 @@ public class PageMeteo extends AppCompatActivity {
 
             TextView affichageMeteo = (TextView)this.findViewById(R.id.meteo);
             affichageMeteo.setText(soleilOuNuage + "\n");
-            affichageMeteo.append("\n\n\n\n\n");
-            affichageMeteo.append("Vent : " + ventDirection + " " + ventForce + "\n");
+            affichageMeteo.append("\n\n\n\n");
+            affichageMeteo.append("Temperature : " + temperature + "\n");
+            affichageMeteo.append("Vent : " + vent + "\n");
             affichageMeteo.append("Humidite : " + humidite + "\n");
 
 
             MeteoDAO meteoDAO = new MeteoDAO(getApplicationContext());
-            meteoDAO.ajouterMeteo(soleilOuNuage);
+            meteoDAO.ajouterMeteo(soleilOuNuage, Integer.parseInt(humidite), vent);
 
 
         } catch (IOException e) {
