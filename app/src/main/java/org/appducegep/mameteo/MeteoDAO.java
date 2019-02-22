@@ -11,7 +11,7 @@ import java.util.Date;
 // https://developer.android.com/training/data-storage/sqlite.html
 
 public class MeteoDAO extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Meteo.db";
 
     public MeteoDAO(Context context) {
@@ -28,11 +28,16 @@ public class MeteoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        String SQL_MISEAJOUR_TABLE = "alter table meteo add column vent TEXT";
+        db.execSQL(SQL_MISEAJOUR_TABLE);
+        String SQL_MISEAJOUR_TABLE_B = "alter table meteo add column humidite Integer";
+        db.execSQL(SQL_MISEAJOUR_TABLE_B);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+        //pour retirer une colonne, copier la table, drop, create et mettre les données copiées dans la nouvelle
+
     }
 
     public void ajouterMeteo(String soleilOuNuage)
