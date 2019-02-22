@@ -109,7 +109,7 @@ public class PageMeteo extends AppCompatActivity {
             if(soleilOuNuage.compareTo("Sunny") == 0) soleilOuNuage = "Ensoleillé";
             else soleilOuNuage = "Nuageux";
 
-            TextView afficherTitre = this.findViewById(R.id.navigation_meteo);
+            TextView afficherTitre = this.findViewById(R.id.message);
             afficherTitre.setText("Meteo de " + ville);
 
             System.out.println("Meteo = " + soleilOuNuage);
