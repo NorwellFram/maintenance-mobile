@@ -27,7 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class PageMeteo extends AppCompatActivity {
 
     private TextView libelleTitre;
-
+/*
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -47,7 +47,7 @@ public class PageMeteo extends AppCompatActivity {
             return false;
         }
     };
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +60,8 @@ public class PageMeteo extends AppCompatActivity {
         }
 
         libelleTitre = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         String CLE = "84024e152471403aad3190444192202";
         String xml = "";
