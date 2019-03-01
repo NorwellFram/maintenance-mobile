@@ -63,11 +63,10 @@ public class PageMeteo extends AppCompatActivity {
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        String CLE = "84024e152471403aad3190444192202";
         String xml = "";
 
         try {
-            URL url = new URL("https://api.apixu.com/v1/current.xml?key="+CLE+"&q=Matane");
+            URL url = new URL("https://www.lemonde.fr/rss/une.xml");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -94,41 +93,30 @@ public class PageMeteo extends AppCompatActivity {
             docBuilder = builderFactory.newDocumentBuilder();
             Document doc = null;
             doc = docBuilder.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-            Element elementHumidite = (Element)doc.getElementsByTagName("humidity").item(0);
-            String humidite = elementHumidite.getTextContent();
-            Element elementVentForce = (Element)doc.getElementsByTagName("wind_kph").item(0);
-            String ventForce = elementVentForce.getTextContent();
-            Element elementVentDirection = (Element)doc.getElementsByTagName("wind_dir").item(0);
-            String ventDirection = elementVentDirection.getTextContent();
-            Element elementCondition = (Element)doc.getElementsByTagName("condition").item(0);
-            Element elementSoleilOuNuage = (Element)elementCondition.getElementsByTagName("text").item(0);
-            String soleilOuNuage = elementSoleilOuNuage.getTextContent();
-            Element elementLieu = (Element)doc.getElementsByTagName("location").item(0);
-            Element elementVille = (Element)elementLieu.getElementsByTagName("name").item(0);
-            String ville=  elementVille.getTextContent();
-            String vent = ventDirection+" "+ventForce;
-            Element elementTemperature = (Element)doc.getElementsByTagName("temp_c").item(0);
-            float temperature = Float.parseFloat(elementTemperature.getTextContent());
-            if(soleilOuNuage.compareTo("Sunny") == 0) soleilOuNuage = "Ensoleillé";
-            else soleilOuNuage = "Nuageux";
+            Element elementArticle = (Element)doc.getElementsByTagName("item").item(0);
+            Element elementTitre = (Element)elementArticle.getElementsByTagName("title").item(0);
+            String titre = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                titre = elementTitre.getTextContent();
+            }
+            Element elementContenu= (Element)elementArticle.getElementsByTagName("description").item(0);
+            String contenu = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO) {
+                contenu = elementContenu.getTextContent();
+            }
+
 
             TextView afficherTitre = this.findViewById(R.id.message);
-            afficherTitre.setText("Meteo de " + ville);
+            afficherTitre.setText(titre);
 
-            System.out.println("Meteo = " + soleilOuNuage);
-            System.out.println("Vent : " + ventDirection + " " + ventForce + "\n");
-            System.out.println("Humidite = " + humidite);
 
             TextView affichageMeteo = (TextView)this.findViewById(R.id.meteo);
-            affichageMeteo.setText(soleilOuNuage + "\n");
-            affichageMeteo.append("\n\n\n\n");
-            affichageMeteo.append("Temperature : " + temperature + "\n");
-            affichageMeteo.append("Vent : " + vent + "\n");
-            affichageMeteo.append("Humidite : " + humidite + "\n");
+            affichageMeteo.setText(contenu);
 
 
-            MeteoDAO meteoDAO = new MeteoDAO(getApplicationContext());
-            meteoDAO.ajouterMeteo(soleilOuNuage, Integer.parseInt(humidite), vent);
+
+            //MeteoDAO meteoDAO = new MeteoDAO(getApplicationContext());
+            //meteoDAO.ajouterMeteo(soleilOuNuage, Integer.parseInt(humidite), vent);
 
 
         } catch (IOException e) {
